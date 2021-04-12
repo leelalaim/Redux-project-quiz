@@ -2,6 +2,23 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { quiz } from '../reducers/quiz';
 
+const Summary = () => {
+
+  // const question = useSelector((state) => state.quiz.questions[state.quiz.currentQuestionIndex])
+
+  // if (!question) {
+  //    return <h1>Oh no! I could not find the current question!</h1>
+  //  }
+
+  const answer = useSelector((state) => state.quiz.initialState{state.quiz.answers})
+  console.log(answer)
+    return (
+      <div>
+          <h1>hello</h1>
+      </div>
+ )
+}
+
 export const CurrentQuestion = () => {
   const question = useSelector((state) => state.quiz.questions[state.quiz.currentQuestionIndex])
 
@@ -37,8 +54,11 @@ export const CurrentQuestion = () => {
       <button onClick={() => dispatch(quiz.actions.goToNextQuestion())}>
         Next
       </button>
+      <Summary />
     </div>
   )
 }
+
+
 
 
