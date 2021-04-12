@@ -2,8 +2,6 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { quiz } from 'reducers/quiz'
-import { Summary } from './components/Summary'
-
 import { CurrentQuestion } from 'components/CurrentQuestion'
 
 const reducer = combineReducers({
