@@ -23,11 +23,12 @@ const ButtonNext = styled.button`
   color: blue;
   font-size: 40px;
 `
-export const CurrentQuestion = () => {
+export const CurrentQuestion = ({ setSection }) => {
   const question = useSelector((state) => state.quiz.questions[state.quiz.currentQuestionIndex])
   const answer = useSelector((state) => state.quiz.answers.find(
     (a) => a.questionId === question.id
   ));
+  const correctAnswer = useSelector((state) => state.quiz.answers.isCorrect)
 
   const dispatch = useDispatch();
 
@@ -55,10 +56,17 @@ export const CurrentQuestion = () => {
           </>
         )
       })}
-      {console.log(question.id)}
-      <ButtonNext type="submit" onClick={() => dispatch(quiz.actions.goToNextQuestion())}>
-        Next
-      </ButtonNext>
+      {console.log(correctAnswer)}
+      {if (correctAnswer) {
+        return (
+          <h3>CORRECT!</h3>
+        ) } else if (!correctAnswer) {
+          <h3>WRONG!</h3>
+        } else {
+          <h3></h3>
+        }
+        
+      {(question.id < 7) ? (<ButtonNext type="button" onClick={() => dispatch(quiz.actions.goToNextQuestion())}>Next</ButtonNext>) : <button type="submit" onClick={() => { setSection('summary') }}>Submit</button>}
     </QuestionSection>
   )
 }

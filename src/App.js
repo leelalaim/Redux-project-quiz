@@ -18,7 +18,7 @@ export const App = () => {
   return (
     <Provider store={store}>
       {section === 'welcome' && (<Welcome setSection={setSection} />)}
-      {section === 'current-question' && (<CurrentQuestion />)}
+      {section === 'current-question' && (<CurrentQuestion setSection={setSection} />)}
       {section === 'summary' && (<Summary />)}
     </Provider>
   )

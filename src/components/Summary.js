@@ -5,7 +5,6 @@ import { quiz } from '../reducers/quiz';
 export const Summary = () => {
   const dispatch = useDispatch();
   const answers = useSelector((state) => state.quiz.answers)
-  console.log(answers)
   return (
     <>
       {answers.map((answer) => {
