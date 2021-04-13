@@ -1,8 +1,28 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import styled from 'styled-components';
 import { quiz } from '../reducers/quiz';
-import { Summary } from './Summary';
 
+const QuestionSection = styled.section`
+  background-color: blue;
+  width: 100vw;
+  height: 50%;
+  margin: 0px;
+`
+
+const QuestionTitle = styled.h1`
+  font-size: 40px;
+  font-family: 'Century gothic'
+  margin: 0px;
+`
+
+const LabelTitle = styled.label`
+  font-size: 20px;`
+
+const ButtonNext = styled.button`
+  color: blue;
+  font-size: 40px;
+`
 export const CurrentQuestion = () => {
   const question = useSelector((state) => state.quiz.questions[state.quiz.currentQuestionIndex])
   const answer = useSelector((state) => state.quiz.answers.find(
@@ -16,12 +36,12 @@ export const CurrentQuestion = () => {
   }
 
   return (
-    <div>
-      <h1>Question: {question.questionText}</h1>
+    <QuestionSection>
+      <QuestionTitle>Question: {question.questionText}</QuestionTitle>
       {question.options.map((option, index) => {
         return (
           <>
-            <label htmlFor={option}>{option}</label>
+            <LabelTitle htmlFor={option}>{option}</LabelTitle>
             <input
               key={index}
               type="radio"
@@ -35,11 +55,11 @@ export const CurrentQuestion = () => {
           </>
         )
       })}
-      <button type="submit" onClick={() => dispatch(quiz.actions.goToNextQuestion())}>
+      {console.log(question.id)}
+      <ButtonNext type="submit" onClick={() => dispatch(quiz.actions.goToNextQuestion())}>
         Next
-      </button>
-      <Summary />
-    </div>
+      </ButtonNext>
+    </QuestionSection>
   )
 }
 
