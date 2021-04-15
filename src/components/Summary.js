@@ -6,31 +6,39 @@ import { quiz } from '../reducers/quiz';
 const SummaryContainer = styled.section`
   display: flex;
   flex-direction: column;
+  color: white;
 `;
 
 const RestartButton = styled.button`
-  color: #26233A;
+  color: #26233a;
   font-size: 20px;
+  font-weight: bold;
   border-style: none;
-  padding: 13px;
-  border-radius: 10px;
+  padding: 20px 30px;
+  border-radius: 50px;
+  cursor: pointer;
 `
 
-export const Summary = () => {
-  // const question = useSelector((state) => state.quiz.questions[state.quiz.currentQuestionIndex])
+export const Summary = ({ setSection }) => {
   const dispatch = useDispatch();
   const answers = useSelector((state) => state.quiz.answers)
+
+  const correctAnswers = answers.filter((answer) => answer.isCorrect === true)
+
+  console.log(correctAnswers.length)
   return (
     <SummaryContainer>
-      <h3>You answered:</h3>
-      {answers.map((answer) => {
-        return (
-          <div>
-            <h1>{answer.answer}</h1>
-          </div>
-        )
-      })}
-      <RestartButton type="button" onClick={() => { dispatch(quiz.actions.restart()) }}>Restart</RestartButton>
+      <div>
+        <h2>You got {correctAnswers.length} correct answers out of 7</h2>
+      </div>
+      <RestartButton
+        type="button"
+        onClick={() => {
+          dispatch(quiz.actions.restart())
+          setSection('welcome')
+        }}>
+          Restart
+      </RestartButton>
     </SummaryContainer>
   )
 }

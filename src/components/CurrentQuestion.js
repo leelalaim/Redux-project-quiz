@@ -6,42 +6,99 @@ import { quiz } from '../reducers/quiz';
 const QuestionSection = styled.section`
   width: 100vw;
   margin: 0 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 `
+const Wrapper = styled.div`
+  height: auto;
+  width: 100%;
+  padding: 0px 16px 24px 16px;
+  box-sizing: border-box;
+`;
 
 const QuestionTitle = styled.h1`
   font-size: 40px;
   font-family: 'Helvetica'
   margin: 0px;
-  color: #26233A;
+  color: #ffffff;
   text-align: left;
 `
 
 const LabelTitle = styled.label`
-  font-size: 20px;`
+  position: absolute;
+  top: 25%;
+  left: 4px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: white;
+  border: 1px solid #bebebe;
+`
 
 const ButtonNext = styled.button`
-  color: #26233A;
+  color: #26233a;
   font-size: 20px;
+  font-weight: bold;
   border-style: none;
-  padding: 13px;
-  border-radius: 10px;
-  align-items: right;
+  padding: 20px 30px;
+  border-radius: 50px;
+  cursor: pointer;
 `
 
 const Options = styled.section`
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
   align-items: center;
-  width: 400px;
+  height: 48px;
+  position: relative;
 `;
 
 const SubmitButton = styled.button`
-  color: #26233A;
+  color: #26233a;
   font-size: 20px;
+  font-weight: bold;
   border-style: none;
-  padding: 13px;
-  border-radius: 10px;
+  padding: 20px 30px;
+  border-radius: 50px;
+  cursor: pointer;
+`
+
+const RadioButton = styled.input`
+opacity: 0;
+  z-index: 1;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  &:hover ~ ${LabelTitle} {
+    background: #bebebe;
+    &::after {
+      content: "";
+      display: block;
+      border-radius: 50%;
+      width: 12px;
+      height: 12px;
+      margin: 6px;
+      background: #eeeeee;
+    }
+  }
+  ${(props) => props.checked && ` 
+    &:checked + ${LabelTitle} {
+      background: #db7290;
+      border: 1px solid #db7290;
+      &::after {
+        content: "";
+        display: block;
+        border-radius: 50%;
+        width: 12px;
+        height: 12px;
+        margin: 6px;
+        box-shadow: 1px 3px 3px 1px rgba(0, 0, 0, 0.1);
+        background: white;
+      }
+    }
+  `}
 `
 
 export const CurrentQuestion = ({ setSection }) => {
@@ -77,25 +134,28 @@ export const CurrentQuestion = ({ setSection }) => {
   return (
     <QuestionSection>
       <QuestionTitle>Question: {question.questionText}</QuestionTitle>
-      {question.options.map((option, index) => {
-        return (
-          <Options>
-            <LabelTitle htmlFor={option}>{option}</LabelTitle>
-            <input
-              key={index}
-              type="radio"
-              id={index}
-              name="contact"
-              disabled={answer !== undefined}
-              checked={answer !== undefined && answer.answerIndex === index}
-              onClick={() => dispatch(quiz.actions.submitAnswer({
-                questionId: question.id, answerIndex: index
-              }))} />
-          </Options>
-        )
-      })}
-
+      <Wrapper>
+        {question.options.map((option, index) => {
+          return (
+            <Options>
+              <RadioButton
+                key={index}
+                type="radio"
+                id={index}
+                name="contact"
+                disabled={answer !== undefined}
+                checked={answer !== undefined && answer.answerIndex === index}
+                onClick={() => dispatch(quiz.actions.submitAnswer({
+                  questionId: question.id, answerIndex: index
+                }))} />
+              <LabelTitle />
+              <div htmlFor={option}>{option}</div>
+            </Options>
+          )
+        })}
+      </Wrapper>
       {determineCorrectness()}
+      <h3>{currentQuestionIndex + 1} / 7</h3>
 
       {(question.id < 7) ? (<ButtonNext type="button" onClick={() => dispatch(quiz.actions.goToNextQuestion())}>Next</ButtonNext>) : <SubmitButton type="submit" onClick={() => { setSection('summary') }}>Submit</SubmitButton>}
     </QuestionSection>

@@ -14,7 +14,7 @@ const reducer = combineReducers({
 const store = configureStore({ reducer })
 
 const Container = styled.section`
-  background-color: #7090B7;
+  background-color: #d81159;
   height: 100vh;
   display: flex;
   justify-content: center;
