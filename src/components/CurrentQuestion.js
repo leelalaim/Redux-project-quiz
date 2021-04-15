@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { quiz } from '../reducers/quiz';
 
 const QuestionSection = styled.section`
-  width: 100vw;
+  width: 70%;
   margin: 0 35px;
   display: flex;
   align-items: center;
@@ -14,15 +14,19 @@ const QuestionSection = styled.section`
 const Wrapper = styled.div`
   height: auto;
   width: 100%;
-  padding: 0px 16px 24px 16px;
   box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  margin: 0;
 `;
 
 const QuestionTitle = styled.h1`
   font-size: 40px;
   font-family: 'Helvetica'
   margin: 0px;
-  color: #ffffff;
+  color: #ffd500;
   text-align: left;
 `
 
@@ -36,6 +40,11 @@ const LabelTitle = styled.label`
   background: white;
   border: 1px solid #bebebe;
 `
+
+const LabelText = styled.div`
+  color: white;
+  font-weight: bold;
+`;
 
 const ButtonNext = styled.button`
   color: #26233a;
@@ -101,6 +110,13 @@ opacity: 0;
   `}
 `
 
+const StatusText = styled.h3`
+  color: white;
+`;
+const Counter = styled.p`
+  color: white;
+`;
+
 export const CurrentQuestion = ({ setSection }) => {
   const question = useSelector((state) => state.quiz.questions[state.quiz.currentQuestionIndex])
   const answer = useSelector((state) => state.quiz.answers.find(
@@ -111,16 +127,14 @@ export const CurrentQuestion = ({ setSection }) => {
 
   const correctAnswer = useSelector((state) => state.quiz.answers[currentQuestionIndex])
 
-  console.log(correctAnswer, currentQuestionIndex)
-
   const determineCorrectness = () => {
     if (correctAnswer === undefined) {
-      return <h3>Waiting for an answer...</h3>
+      return <StatusText>Waiting for an answer...</StatusText>
     } else if (correctAnswer) {
       if (correctAnswer.isCorrect) {
-        return <h3>CORRECT!</h3>
+        return <StatusText>CORRECT!</StatusText>
       } else {
-        return <h3>WRONG!</h3>
+        return <StatusText>WRONG!</StatusText>
       }
     }
   }
@@ -149,13 +163,13 @@ export const CurrentQuestion = ({ setSection }) => {
                   questionId: question.id, answerIndex: index
                 }))} />
               <LabelTitle />
-              <div htmlFor={option}>{option}</div>
+              <LabelText htmlFor={option}>{option}</LabelText>
             </Options>
           )
         })}
       </Wrapper>
       {determineCorrectness()}
-      <h3>{currentQuestionIndex + 1} / 7</h3>
+      <Counter>{currentQuestionIndex + 1} / 7</Counter>
 
       {(question.id < 7) ? (<ButtonNext type="button" onClick={() => dispatch(quiz.actions.goToNextQuestion())}>Next</ButtonNext>) : <SubmitButton type="submit" onClick={() => { setSection('summary') }}>Submit</SubmitButton>}
     </QuestionSection>
